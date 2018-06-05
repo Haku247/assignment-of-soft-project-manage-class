@@ -46,9 +46,6 @@
     <Compile Include="task\__init__.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="README.md">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="requirements.txt" />
     <Content Include="task\static\bootstrap\css\bootstrap-theme.css" />
     <Content Include="task\static\bootstrap\css\bootstrap-theme.css.map" />
