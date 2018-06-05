@@ -1,0 +1,76 @@
+﻿{% extends 'me.html' %}
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    {% block title %}Publish{% endblock %}
+</head>
+<body>
+    {% block info %}
+    <div class="container">
+        <h2 style="font-size:x-large">Published Tasks</h2>
+        <div class="row">
+            <div class="col-mod-6 col-md-offset-3">
+        <table class="table table-striped">
+            <thead>
+                <tr style="color:#0094ff;font-size:larger">
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>StartDate</th>
+                    <th>Receiver</th>
+                    <th>Status</th>
+                    <th>Verify</th>
+                </tr>
+            </thead>
+            {% for task in published_task %}
+            <tr style="color:#068667;font-size:large">
+                <td>{{task.id}}</td>
+                <td>{{task.name}}</td>
+                <td>{{task.start}}</td>
+                <td>
+                    {% if task.receiver %}
+                    <p>{{task.receiver}}</p>
+                    {% else %}
+                    <p class="text-info">
+                    <span class="glyphicon glyphicon-hoursglass"></span>
+                    waiting
+                    </p>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" 
+                             aria-valuenow="{{task.status}}" aria-valuemin="0" aria-valuemax="100" style="min-width:2em;width:{{task.status}}%">
+                            {{task.status}}%
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <form action="complete" method="post">
+                        {% csrf_token %}
+                        {% if task.complete %}
+                        <button type="submit" disabled class="btn btn-info">Completed</button>
+                        {% else %}
+                            {% ifequal task.status 100 %}
+                                {% if task.completed %}
+                                <button type="button" class="btn btn-prime" disabled>Completed</button>
+                                {% else %}
+                                <input type="number" value="{{task.id}}" hidden="hidden" name="id"/>
+                                <button type="submit" class="btn btn-success">Confirm</button>
+                                {% endif %}
+                            {% else %}
+                            <button type="submit" class="btn btn-warning" disabled>during</button>
+                            {% endifequal %}
+                        {% endif %}
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+            </div>
+            </div>
+    </div>
+    {% endblock %}
+</body>
+</html>
